@@ -46,9 +46,9 @@ def duplicate_dbt_job(job_id: int, new_job_name: str, new_description: str, new_
         print(f'Failed to duplicate job. Status code: {response.status_code}')
 
 
-duplicate_dbt_job(job_id=287804, 
-                  new_job_name="Approval Rate PayU Poland (Weekly) - adrian.pasek@payu.com",
-                  new_description="Weekly job to refresh parent/upstream models to mart_payupoland__approval_rate and mart_payupoland__approval_rate_hour",
-                  new_cron="30 7 * * 7",
+duplicate_dbt_job(job_id=287853, 
+                  new_job_name="Approval Rate PayU Global (Weekly) - adrian.pasek@payu.com",
+                  new_description="Weekly job to refresh parent/upstream models to mart_global__approval_rate and mart_global__approval_rate_hour",
+                  new_cron="35 7 * * 7",
                   project_id=GLOBAL_DATA_MODEL_PROJECT_ID,
                   api_ver="v2")
