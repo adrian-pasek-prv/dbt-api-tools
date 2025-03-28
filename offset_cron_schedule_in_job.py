@@ -2,8 +2,8 @@ from api_url_header import return_api_url_header
 from pagination_handler import paginate_response
 import csv
 import argparse
-import sys
 import requests
+from copy import deepcopy
 
 def offset_cron_hour(cron: str, offset: int) -> str:
     cron_split = cron.split()
@@ -77,7 +77,7 @@ if __name__ == "__main__":
                     adjusted_cron = offset_cron_hour(job["schedule"]["cron"], offset)
                     writer.writerow([job["name"], job["schedule"]["cron"], adjusted_cron])
                     # Send POST request only if send_post_request is True
-                    if send_post_request and job["name"] == "Approval Rate PayU Poland (Daily) - katarzyna.leszczynska@payu.com":
+                    if send_post_request and job["name"] == "After Merge - adrian.pasek@payu.com":
                        include_keys = ["account_id", "project_id", "environment_id", "name",
                                        "dbt_version", "deferring_environment_id", "deferring_job_definition_id",
                                        "description", "execute_steps", "execution", "generate_docs",
@@ -85,7 +85,8 @@ if __name__ == "__main__":
                                        "run_generate_sources", "run_lint", "errors_on_lint_failure", "settings", 
                                        "state", "triggers_on_draft_pr", "triggers", "schedule", "generate_sources",
                                        ]
-                       updated_job = {key: job[key] for key in include_keys}
+                       updated_job = {key: deepcopy(job[key]) for key in include_keys}
+                       updated_job["schedule"]["date"]["type"] = "custom_cron"
                        updated_job["schedule"]["date"]["cron"] = adjusted_cron
                        updated_job["schedule"]["cron"] = adjusted_cron
                        response = requests.post(
