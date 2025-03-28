@@ -34,7 +34,7 @@ def paginate_response(endpoint: str,
     retries = 0
 
     # Check if params include offset and limit, if not then expand the copied dict
-    params = params.copy() if params else {}
+    params = params if params else {}
     if "offset" in params or "limit" in params:
         raise ValueError("params must not include offset or limit")
     params.update({"offset": offset, "limit": limit})

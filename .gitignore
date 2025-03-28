@@ -163,3 +163,7 @@ cython_debug/
 
 # Config files
 config
+jobs_with_adjusted_cron.csv
+.gitignore
+job_names.txt
+.vscode
