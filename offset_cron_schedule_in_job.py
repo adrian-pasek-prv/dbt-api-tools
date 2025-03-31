@@ -72,12 +72,12 @@ if __name__ == "__main__":
             if job["job_type"] == "scheduled" \
                 and job["state"] == 1 \
                 and job["schedule"]["cron"] \
-                and not any(keyword in job["name"] for keyword in exclude_keywords):
+                and not any(keyword.upper() in job["name"].upper() for keyword in exclude_keywords):
                     # Write to CSV a job_name, original_cron, adjusted_cron
                     adjusted_cron = offset_cron_hour(job["schedule"]["cron"], offset)
                     writer.writerow([job["name"], job["schedule"]["cron"], adjusted_cron])
                     # Send POST request only if send_post_request is True
-                    if send_post_request and job["name"] == "After Merge - adrian.pasek@payu.com":
+                    if send_post_request:
                        include_keys = ["account_id", "project_id", "environment_id", "name",
                                        "dbt_version", "deferring_environment_id", "deferring_job_definition_id",
                                        "description", "execute_steps", "execution", "generate_docs",
@@ -96,6 +96,9 @@ if __name__ == "__main__":
                        )
                        if response.status_code == 200:
                            print(f"Job {job['name']} updated successfully. With cron: '{adjusted_cron}'")
+                       else:
+                           print(f"Skipped {job['name']} with ID: {job['id']}")
+                           next 
 
     
     
